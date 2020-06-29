@@ -1,0 +1,51 @@
+# Convention from https://wiki.dynamo.biozentrum.unibas.ch/w/index.php/Table_convention
+# Dictionary of column names and their column numbers
+# Column numbers are 1-indexed
+
+CONVENTION2COLUMN = {'tag': 1,
+                     'aligned_value': 2,
+                     'averaged_value': 3,
+                     'dx': 4,
+                     'dy': 5,
+                     'dz': 6,
+                     'tdrot': 7,
+                     'tilt': 8,
+                     'narot': 9,
+                     'cc': 10,
+                     'cc2': 11,
+                     'cpu': 12,
+                     'ftype': 13,
+                     'ymintilt': 14,
+                     'ymaxtilt': 15,
+                     'xmintilt': 16,
+                     'xmaxtilt': 17,
+                     'fs1': 18,
+                     'fs2': 19,
+                     'tomo': 20,
+                     'reg': 21,
+                     'class': 22,
+                     'annotation': 23,
+                     'x': 24,
+                     'y': 25,
+                     'z': 26,
+                     'dshift': 27,
+                     'daxis': 28,
+                     'dnarot': 29,
+                     'dcc': 30,
+                     'otag': 31,
+                     'npar': 32,
+                     'undefined1' : 33,
+                     'ref': 34,
+                     'sref': 35,
+                     'apix': 36,
+                     'def': 37,
+                     'undefined2' : 38,
+                     'undefined3' : 39,
+                     'undefined4' : 40,
+                     'eig1': 41,
+                     'eig2': 42,
+                     }
+
+COLUMN2CONVENTION = {value: key for key, value in CONVENTION2COLUMN.items()}
+
+COLUMN_NAMES = tuple(CONVENTION2COLUMN.keys())
