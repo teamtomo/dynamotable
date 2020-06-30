@@ -62,6 +62,11 @@ def new(dataframe: pd.DataFrame, filename: str):
         tomo_idx = [tomo_name_idx[name] for name in dataframe['tomo_name']]
         dataframe['tomo'] = tomo_idx
 
+    # Check if tags present in dataframe, if not, make a set of linear tags
+    if 'tag' not in dataframe.columns:
+        tags = [x+1 for x in range(n_rows)]
+        dataframe['tag'] = tags
+
     # Empty columns will be either 1 or 0, precreate these columns
     zeros = [0 for x in range(n_rows)]
     ones = [1 for x in range(n_rows)]
