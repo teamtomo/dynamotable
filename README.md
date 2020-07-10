@@ -6,8 +6,10 @@
 `dynamotable` is a Python package to facilitate reading and writing of table files from the Dynamo subtomogram averaging package
 
 ## Features
-- Read and write table files created by Dynamo as pandas DataFrames
-- Support for streamlined table map file reading and writing
+- Read [table files](https://wiki.dynamo.biozentrum.unibas.ch/w/index.php/Table) created by Dynamo as pandas DataFrames
+- Write table files compatible with Dynamo subtomogram averaging from minimal data
+- Supports reading and writing of [table map files](https://wiki.dynamo.biozentrum.unibas.ch/w/index.php/Tomogram-table_map_file) with tables to keep track of tomogram files
+- clean API
 
 
 
@@ -67,9 +69,20 @@ table map files are two column text files containing the tomogram index (found i
 
 [8742 rows x 42 columns]
 ```
+An extra column called `tomo_file` is added to the dataframe which contains the filepath of the tomogram you wish the particle to be linked to
 
 ### Writing table files
-Table files are written 
+Table files are written with `dynamotable.write` or equivalently `dynamotable.new`
+```python
+>>> dynamotable.write(df, 'table_out.tbl')
+```
+
+Note that
+- if `tag` is not a column in the dataframet then tags will be generated automatically
+- if `tomo_name` is a column in the dataframe then a corresponding table map file will be generated
+- if `tomo_name` is provided but no tomogram table indices are present these will be generated automatically
+- if the `aligned_value` column is not present it will be set to 1 to mark particles for alignment in subtomogram averaging projects
+
 
 ## License
 The project is released under the BSD 3-Clause License
