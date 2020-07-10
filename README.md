@@ -45,9 +45,31 @@ df = dynamotable.open('t_double.tbl')
 ```
 
 #### With table map file
+table map files are two column text files containing the tomogram index (found in column 20 of a table file) and the file path of the tomogram.
+```
+>>> df = dynamotable.read('t_complex.tbl', 'tmap_complex.doc')
+>>> df
+```
+```
+>>> df
+        tag  aligned_value  ...  eig1                   tomo_file
+0         2              1  ...     0  tomo_ts01.mrc_15.00Apx.mrc
+1         4              1  ...     0  tomo_ts01.mrc_15.00Apx.mrc
+2         6              1  ...     0  tomo_ts01.mrc_15.00Apx.mrc
+3         8              1  ...     0  tomo_ts01.mrc_15.00Apx.mrc
+4        10              1  ...     0  tomo_ts01.mrc_15.00Apx.mrc
+     ...            ...  ...   ...                         ...
+8737  18064              1  ...     0  tomo_ts99.mrc_15.00Apx.mrc
+8738  18066              1  ...     0  tomo_ts99.mrc_15.00Apx.mrc
+8739  18068              1  ...     0  tomo_ts99.mrc_15.00Apx.mrc
+8740  18070              1  ...     0  tomo_ts99.mrc_15.00Apx.mrc
+8741  18072              1  ...     0  tomo_ts99.mrc_15.00Apx.mrc
+
+[8742 rows x 42 columns]
+```
 
 ### Writing table files
-
+Table files are written 
 
 ## License
 The project is released under the BSD 3-Clause License

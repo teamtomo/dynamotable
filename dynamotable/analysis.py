@@ -1,7 +1,5 @@
 import pandas as pd
 import numpy as np
-from scipy.optimize import curve_fit
-
 
 def xyz(dataframe: pd.DataFrame) -> np.ndarray:
     xyz_orig = dataframe[['x', 'y', 'z']].to_numpy()
