@@ -30,16 +30,3 @@ def tilt_sym(dataframe: pd.DataFrame) -> pd.DataFrame:
     tilt[idx] = tilt[idx] - 90
     dataframe['tilt_sym'] = tilt
     return dataframe
-
-def fit_gaussian(dataframe: pd.DataFrame, x_col, y_col) -> pd.DataFrame:
-    def gauss(x, *p):
-        A, mu, sigma = p
-        return A * np.exp(-(x-mu)**2 / (2.*sigma**2))
-    mu0 = dataframe[x_col].mean
-    p0 = [0.1, mu0, 45]
-
-    coeff, var_matrix = curve_fit(gauss, dataframe[x_col], dataframe[y_col], p0=p0)
-    xmin = dataframe[x_col].min()
-    xmax = dataframe[x_col].max()
-    linspace_x = np.linspace(xmin, xmax, 1000)
-    return linspace_x, gauss(linspace_x, *coeff)
