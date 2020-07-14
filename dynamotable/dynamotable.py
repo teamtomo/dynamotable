@@ -6,6 +6,7 @@ import pandas as pd
 from .convention import COLUMN_NAMES
 from .table_map import table_map_read
 
+
 def open(table_file: str, table_map_file: str = None) -> pd.DataFrame:
     """
     Opens a dynamo table file, returning a DynamoTable object
@@ -56,10 +57,10 @@ def new(dataframe: pd.DataFrame, filename: str):
     n_rows = dataframe.shape[0]
 
     # Check if df has tomo_name but no tomo entry with indices, if so, fix
-    if 'tomo_name' in dataframe.columns and 'tomo' not in dataframe.columns:
-        tomo_names = dataframe['tomo_name'].unique()
+    if 'tomo_file' in dataframe.columns and 'tomo' not in dataframe.columns:
+        tomo_names = dataframe['tomo_file'].unique()
         tomo_name_idx = {name : index for index, name in enumerate(tomo_names)}
-        tomo_idx = [tomo_name_idx[name] for name in dataframe['tomo_name']]
+        tomo_idx = [tomo_name_idx[name] for name in dataframe['tomo_file']]
         dataframe['tomo'] = tomo_idx
 
     # Check if tags present in dataframe, if not, make a set of linear tags

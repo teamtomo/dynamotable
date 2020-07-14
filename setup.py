@@ -7,7 +7,7 @@ setup(
     packages=['dynamotable'],
     version=f'{__version__}',
     license='BSD 3-Clause License',
-    description="Read and write table files from the Dynamo software package for subtomogram averaging",
+    description="Read and write table files from the Dynamo software package for subtomogram averaging as pandas dataframes",
     author='Alister Burt',
     author_email='alisterburt@gmail.com',
     url='https://github.com/alisterburt/dynamotable',

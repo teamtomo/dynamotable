@@ -79,8 +79,8 @@ Table files are written with `dynamotable.write` or equivalently `dynamotable.ne
 
 Note that
 - if `tag` is not a column in the dataframet then tags will be generated automatically
-- if `tomo_name` is a column in the dataframe then a corresponding table map file will be generated
-- if `tomo_name` is provided but no tomogram table indices are present these will be generated automatically
+- if `tomo_file` is a column in the dataframe then a corresponding table map file will be generated
+- if `tomo_file` is provided but no tomogram table indices are present these will be generated automatically
 - if the `aligned_value` column is not present it will be set to 1 to mark particles for alignment in subtomogram averaging projects
 
 
