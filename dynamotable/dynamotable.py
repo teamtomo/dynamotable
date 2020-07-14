@@ -103,7 +103,7 @@ def new(dataframe: pd.DataFrame, filename: str):
         table_file_name = filename.replace('.tbl', '.doc')
 
         # Get necessary info in new dataframe
-        table_map = dataframe[['tomo', 'tomo_file']]
+        table_map = dataframe[['tomo', 'tomo_file']].drop_duplicates(subset='tomo')
         table_map.to_csv(table_file_name, sep=' ', header=False, index=False)
 
     return
