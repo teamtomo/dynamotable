@@ -3,3 +3,5 @@
 /test/data/complex_out.doc
 package.sh
 .idea
+build
+dist
