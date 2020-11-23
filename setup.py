@@ -1,12 +1,7 @@
 from distutils.core import setup
 from pathlib import Path
 
-version_path = Path(__file__).parent.absolute() / 'dynamotable' / 'version.py'
-with open(version_path) as f:
-    for line in f.readlines():
-        if line.startswith('__version__ ='):
-            __version__ = line
-            break
+from dynamotable.version import __version__
 
 setup(
     name='dynamotable',
@@ -19,9 +14,6 @@ setup(
     url='https://github.com/alisterburt/dynamotable',
     download_url=f'https://github.com/alisterburt/dynamotable/archive/v{__version__}.tar.gz',
     keywords=['IO', 'dynamo', 'table file', 'cryo-EM', 'cryo-ET'],
-    install_requires=[
-        'pandas',
-    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
