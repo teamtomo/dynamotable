@@ -1,6 +1,12 @@
 from distutils.core import setup
+from pathlib import Path
 
-from dynamotable import __version__
+version_path = Path(__file__).parent.absolute() / 'dynamotable' / 'version.py'
+with open(version_path) as f:
+    for line in f.readlines():
+        if line.startswith('__version__ ='):
+            __version__ = line
+            break
 
 setup(
     name='dynamotable',
