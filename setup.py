@@ -1,5 +1,4 @@
-from distutils.core import setup
-from pathlib import Path
+from setuptools import setup
 
 from dynamotable.version import __version__
 
@@ -14,6 +13,8 @@ setup(
     url='https://github.com/alisterburt/dynamotable',
     download_url=f'https://github.com/alisterburt/dynamotable/archive/v{__version__}.tar.gz',
     keywords=['IO', 'dynamo', 'table file', 'cryo-EM', 'cryo-ET'],
+    setup_requires=['wheel',
+                    'pandas'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
