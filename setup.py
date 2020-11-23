@@ -13,8 +13,6 @@ setup(
     url='https://github.com/alisterburt/dynamotable',
     download_url=f'https://github.com/alisterburt/dynamotable/archive/v{__version__}.tar.gz',
     keywords=['IO', 'dynamo', 'table file', 'cryo-EM', 'cryo-ET'],
-    setup_requires=['wheel',
-                    'pandas'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
