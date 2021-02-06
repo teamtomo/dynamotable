@@ -25,10 +25,10 @@ pip install dynamotable
 #### Simple
 ```python
 import dynamotable
-df = dynamotable.open('t_double.tbl')
+df = dynamotable.read('t_double.tbl')
 ```
 ```
->>> df = dynamotable.open('t_double.tbl')
+>>> df = dynamotable.read('t_double.tbl')
 >>> df
      tag  aligned_value  averaged_value        dx  ...  npar  undefined1  ref  sref
 0      1              1               0  2.517800  ...     0           0    0     5
@@ -48,11 +48,13 @@ df = dynamotable.open('t_double.tbl')
 
 #### With table map file
 table map files are two column text files containing the tomogram index (found in column 20 of a table file) and the file path of the tomogram.
-```
+
+```python
 >>> df = dynamotable.read('t_complex.tbl', 'tmap_complex.doc')
 >>> df
 ```
-```
+
+```python
 >>> df
         tag  aligned_value  ...  eig1                   tomo_file
 0         2              1  ...     0  tomo_ts01.mrc_15.00Apx.mrc
@@ -72,7 +74,7 @@ table map files are two column text files containing the tomogram index (found i
 An extra column called `tomo_file` is added to the dataframe which contains the filepath of the tomogram you wish the particle to be linked to
 
 ### Writing table files
-Table files are written with `dynamotable.write` or equivalently `dynamotable.new`
+Table files are written with `dynamotable.write`
 ```python
 >>> dynamotable.write(df, 'table_out.tbl')
 ```
@@ -86,6 +88,3 @@ Note that
 
 ## License
 The project is released under the BSD 3-Clause License
-
-## Known Issues
-- 

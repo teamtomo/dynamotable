@@ -1,2 +1,2 @@
-from .dynamotable import open, read, new, write
+from .io import read, write
 from .version import __version__
