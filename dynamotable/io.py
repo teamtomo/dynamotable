@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from .convention import COLUMN_NAMES
+from .utils import COLUMN_NAMES, generate_column_names, sanitise_table_filename, write_table_map
 
 
 def read(table_file: str, table_map_file: str = None) -> pd.DataFrame:
@@ -14,11 +14,7 @@ def read(table_file: str, table_map_file: str = None) -> pd.DataFrame:
 
     # Get column names
     n_cols = df.shape[1]
-    if n_cols <= len(COLUMN_NAMES):
-        column_names = COLUMN_NAMES[0:n_cols]
-    else:
-        extra_columns_needed = n_cols - len(COLUMN_NAMES)
-        column_names = list(COLUMN_NAMES) + ['' for x in range(extra_columns_needed)]
+    column_names = generate_column_names(n_cols)
 
     # Take absolute value (daxis column sometimes has complex values)
     df = df.apply(pd.to_numeric, errors='ignore')
@@ -26,84 +22,56 @@ def read(table_file: str, table_map_file: str = None) -> pd.DataFrame:
 
     # Add table map info into dataframe
     if table_map_file is not None and Path(table_map_file).exists():
-        table_map_dict = table_map_read(table_map_file)
-        tomo_file = [table_map_dict[tomo_idx] for tomo_idx in df['tomo']]
-        df['tomo_file'] = tomo_file
+        table_map = read_table_map(table_map_file)
+        df = df.merge(table_map)
     return df
 
 
-def write(dataframe: pd.DataFrame, filename: str):
+def write(df: pd.DataFrame, filename: str):
     """
     Writes a dynamo table file from a pandas DataFrame
     """
     # Get n rows
-    n_rows = dataframe.shape[0]
+    n_rows = df.shape[0]
 
     # Check if df has tomo_name but no tomo entry with indices, if so, fix
-    if 'tomo_file' in dataframe.columns and 'tomo' not in dataframe.columns:
-        tomo_names = dataframe['tomo_file'].unique()
+    if 'tomo_file' in df.columns and 'tomo' not in df.columns:
+        tomo_names = df['tomo_file'].unique()
         tomo_name_idx = {name: index for index, name in enumerate(tomo_names)}
-        tomo_idx = [tomo_name_idx[name] for name in dataframe['tomo_file']]
-        dataframe['tomo'] = tomo_idx
+        tomo_idx = [tomo_name_idx[name] for name in df['tomo_file']]
+        df['tomo'] = tomo_idx
 
-    # Check if tags present in dataframe, if not, make a set of linear tags
-    if 'tag' not in dataframe.columns:
-        tags = [x + 1 for x in range(n_rows)]
-        dataframe['tag'] = tags
-
-    # Empty columns will be either 1 or 0, precreate these columns
+    # Initialise empty dictionary to store data before writing and generate some
+    # data for empty columns
+    data = {}
     zeros = [0 for x in range(n_rows)]
     ones = [1 for x in range(n_rows)]
-
-    # Initialise empty dictionary to store data
-    data = {}
+    tags = [x + 1 for x in range(n_rows)]
 
     for column_name in COLUMN_NAMES:
-        if column_name in dataframe.columns:
-            data[column_name] = dataframe[column_name]
-
-        # Aligned value column should set to 1 otherwise alignment projects don't run properly
-        elif column_name not in dataframe.columns and column_name == 'aligned_value':
+        if column_name in df.columns:
+            data[column_name] = df[column_name]
+        elif column_name == 'tag':
+            data[column_name] = tags
+        elif column_name == 'aligned_value':
             data[column_name] = ones
-
         else:
             data[column_name] = zeros
-
-    # Create properly formatted dataframe to write
     table = pd.DataFrame.from_dict(data)
 
-    # Prep filename
-    filename = str(filename)
-    if not filename.endswith('.tbl'):
-        filename = filename.join('.tbl')
-
     # Write out table
+    filename = sanitise_table_filename(filename)
     table.to_csv(filename, sep=' ', header=False, index=False)
 
     # Write out tomogram-table map file if appropriate
-    if 'tomo_file' in dataframe.columns:
-        table_map_file_name = filename.replace('.tbl', '.doc')
-
-        # Get necessary info in new dataframe
-        table_map = dataframe[['tomo', 'tomo_file']].drop_duplicates(subset='tomo')
-        table_map.to_csv(table_map_file_name, sep=' ', header=False, index=False)
-
+    if 'tomo_file' in df.columns:
+        write_table_map(df, filename.replace('.tbl', '.doc'))
     return
 
 
-def table_map_read(filename: str) -> dict:
+def read_table_map(table_map_file: str) -> dict:
+    """Read a Dynamo table map file into a dataframe
     """
-    Reads dynamo table map file
-    :param file: table map file from dynamo
-    :return: dict of form {idx : '/path/to/tomogram'}
-    """
-    table_map = open(filename, 'r')
-    lines = table_map.readlines()
-
-    out_dict = {}
-    for line in lines:
-        idx, path = line.strip().split()
-        out_dict[int(idx)] = path
-
-    table_map.close()
-    return out_dict
+    table_map = pd.read_csv(table_map_file, header=None, delim_whitespace=True)
+    table_map.columns = ['tomo', 'tomo_file']
+    return table_map
