@@ -5,19 +5,27 @@ import pandas as pd
 from .utils import COLUMN_NAMES, generate_column_names, sanitise_table_filename, write_table_map
 
 
+def _safe_to_numeric(col):
+    """Convert column to numeric, returning original if conversion fails."""
+    try:
+        return pd.to_numeric(col)
+    except (ValueError, TypeError):
+        return col
+
+
 def read(table_file: str, table_map_file: str = None) -> pd.DataFrame:
     """
     read a dynamo table file into a pandas dataframe
     """
     # Read into dataframe
-    df = pd.read_csv(table_file, header=None, delim_whitespace=True)
+    df = pd.read_csv(table_file, header=None, sep=r'\s+')
 
     # Get column names
     n_cols = df.shape[1]
     column_names = generate_column_names(n_cols)
 
     # Take absolute value (daxis column sometimes has complex values)
-    df = df.apply(pd.to_numeric, errors='ignore')
+    df = df.apply(_safe_to_numeric)
     df.columns = column_names
 
     # Add table map info into dataframe
@@ -72,6 +80,6 @@ def write(df: pd.DataFrame, filename: str):
 def read_table_map(table_map_file: str) -> dict:
     """Read a Dynamo table map file into a dataframe
     """
-    table_map = pd.read_csv(table_map_file, header=None, delim_whitespace=True)
+    table_map = pd.read_csv(table_map_file, header=None, sep=r'\s+')
     table_map.columns = ['tomo', 'tomo_file']
     return table_map
