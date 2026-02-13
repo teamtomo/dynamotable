@@ -1,2 +1,8 @@
+from importlib.metadata import PackageNotFoundError, version
+
 from .io import read, write
-from .version import __version__
+
+try:
+    __version__ = version("dynamotable")
+except PackageNotFoundError:
+    __version__ = "uninstalled"
