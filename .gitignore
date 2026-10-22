@@ -5,3 +5,7 @@ package.sh
 .idea
 build
 dist
+
+# Python / uv
+__pycache__/
+.venv/
