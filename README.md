@@ -1,5 +1,5 @@
 # dynamotable
-[![Build Status](https://travis-ci.com/alisterburt/dynamotable.svg?branch=master)](https://travis-ci.com/alisterburt/eulerangles)
+[![CI](https://github.com/teamtomo/dynamotable/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/teamtomo/dynamotable/actions/workflows/ci.yml)
 [![PyPI version](https://badge.fury.io/py/dynamotable.svg)](https://pypi.org/project/dynamotable/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/dynamotable.svg)](https://pypi.python.org/pypi/dynamotable/)
 

@@ -10,27 +10,34 @@ name = "dynamotable"
 dynamic = ["version"]
 description = "Read and write Dynamo table files as pandas dataframes"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 license = { text = "BSD-3-Clause" }
 authors = [{ name = "Alister Burt", email = "alisterburt@gmail.com" }]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: BSD License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
 ]
 keywords = ["IO", "dynamo", "table file", "cryo-EM", "cryo-ET"]
 dependencies = ["pandas>=1.0.5"]
 
-[project.optional-dependencies]
+[dependency-groups]
 test = ["pytest", "pytest-cov"]
+dev = [
+    { include-group = "test" },
+    "ipython",
+    "mypy",
+    "pre-commit",
+    "ruff",
+]
 
 [project.urls]
-homepage = "https://github.com/alisterburt/dynamotable"
-repository = "https://github.com/alisterburt/dynamotable"
+homepage = "https://github.com/teamtomo/dynamotable"
+repository = "https://github.com/teamtomo/dynamotable"
 
 [tool.pytest.ini_options]
 testpaths = ["test"]
