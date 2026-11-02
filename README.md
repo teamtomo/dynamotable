@@ -25,7 +25,8 @@ pip install dynamotable
 #### Simple
 ```python
 import dynamotable
-df = dynamotable.read('t_double.tbl')
+
+df = dynamotable.read("t_double.tbl")
 ```
 ```
 >>> df = dynamotable.read('t_double.tbl')
