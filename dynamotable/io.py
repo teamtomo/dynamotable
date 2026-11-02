@@ -22,7 +22,23 @@ def _safe_to_numeric(col: pd.Series) -> pd.Series:
 
 
 def read(table_file: str, table_map_file: str | None = None) -> pd.DataFrame:
-    """Read a dynamo table file into a pandas dataframe."""
+    """Read a Dynamo table file into a pandas DataFrame.
+
+    Parameters
+    ----------
+    table_file : str
+        Path to the Dynamo table (``.tbl``) file.
+    table_map_file : str or None, optional
+        Path to a table map (``.doc``) file that maps tomogram indices to
+        tomogram files. If given and the file exists, its ``tomo_file``
+        column is merged into the result on the ``tomo`` column.
+
+    Returns
+    -------
+    pandas.DataFrame
+        One row per particle, with columns named after the Dynamo table
+        convention.
+    """
     # Read into dataframe
     df = pd.read_csv(table_file, header=None, sep=r"\s+")
 
@@ -42,7 +58,20 @@ def read(table_file: str, table_map_file: str | None = None) -> pd.DataFrame:
 
 
 def write(df: pd.DataFrame, filename: str) -> None:
-    """Write a dynamo table file from a pandas DataFrame."""
+    """Write a Dynamo table file from a pandas DataFrame.
+
+    Columns missing from ``df`` are filled with defaults: ``tag`` counts from
+    1, ``aligned_value`` is 1 and everything else is 0. If ``df`` has a
+    ``tomo_file`` column, a table map (``.doc``) file is written next to the
+    table, and a ``tomo`` index column is added to ``df`` if it has none.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Particle data, with columns named after the Dynamo table convention.
+    filename : str
+        Path of the table to write. ``.tbl`` is appended if missing.
+    """
     # Get n rows
     n_rows = df.shape[0]
 
